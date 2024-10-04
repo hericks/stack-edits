@@ -1,6 +1,8 @@
 name: Update Database
 run-name: Update database 🚀
-on: [push]
+on:
+  schedule:
+    - cron: '0 1 * * *'
 jobs:
   Update-Database:
     runs-on: ubuntu-latest

@@ -1,0 +1,26 @@
+name: Update Database
+run-name: Update database 🚀
+on:
+  schedule:
+    - cron: '0 1 * * *'
+jobs:
+  Update-Database:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Install python
+        uses: actions/setup-python@v5
+        with:
+          cache: 'pip'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Update database
+        run: python3 update_db.py
+      - name: Commit update
+        run: |
+          git config --global user.name 'Matthias Hericks'
+          git config --global user.email 'hericks@users.noreply.github.com'
+          git add questions.db
+          git commit -m "Automatic update"
+          git push

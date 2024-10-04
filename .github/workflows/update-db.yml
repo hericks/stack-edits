@@ -1,5 +1,5 @@
 name: Update Database
-run-name: Updating database 🚀
+run-name: Update database 🚀
 on: [push]
 jobs:
   Update-Database:

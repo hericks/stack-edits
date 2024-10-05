@@ -1,5 +1,4 @@
 import json
-import time
 from datetime import datetime
 from typing import Optional
 
@@ -63,7 +62,6 @@ def get_questions(tag: str = "python-polars") -> list[Question]:
             page += 1
             has_more = response_dict["has_more"]
             pbar.update(1)
-            time.sleep(0.2)
     return all_questions
 
 

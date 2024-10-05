@@ -6,6 +6,7 @@ import duckdb
 import polars as pl
 import requests
 from pydantic import BaseModel
+from requests.adapters import HTTPAdapter, Retry
 from tqdm import tqdm
 
 DB_NAME = "questions.db"
@@ -37,12 +38,31 @@ class Question(BaseModel):
     crawl_date: datetime
 
 
+def requests_retry_session(
+    retries=10,
+    backoff_factor=2,
+    status_forcelist=(400,),
+):
+    session = requests.Session()
+    retry = Retry(
+        total=retries,
+        read=retries,
+        connect=retries,
+        backoff_factor=backoff_factor,
+        status_forcelist=status_forcelist,
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("https://", adapter)
+    return session
+
+
 def get_questions(tag: str = "python-polars") -> list[Question]:
+    session = requests_retry_session()
     crawl_timestamp = datetime.now()
     all_questions, page, has_more = [], 1, True
     with tqdm() as pbar:
         while has_more:
-            response = requests.get(
+            response = session.get(
                 url="https://api.stackexchange.com/2.3/questions",
                 params={
                     "site": "stackoverflow",

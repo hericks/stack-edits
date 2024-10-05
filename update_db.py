@@ -71,16 +71,18 @@ if __name__ == "__main__":
     df_questions = pl.DataFrame(questions)
     print(f"Done fetching {df_questions.height} questions.")
 
-
     db = duckdb.connect(DB_NAME)
     if TABLE_NAME in db.sql("SHOW tables;").pl().to_series():
-        print(f"Table '{TABLE_NAME}' in database '{DB_NAME}' already exists. Concatenating dataframe...")
+        print(
+            f"Table '{TABLE_NAME}' in database '{DB_NAME}' already exists. Concatenating dataframe..."
+        )
         db.sql(f"INSERT INTO questions (SELECT * FROM df_questions);")
     else:
         db = duckdb.connect(DB_NAME)
-        print(f"Table '{TABLE_NAME}' in database '{DB_NAME}' does not exist yet. Creating from dataframe...")
+        print(
+            f"Table '{TABLE_NAME}' in database '{DB_NAME}' does not exist yet. Creating from dataframe..."
+        )
         db.sql("CREATE TABLE questions AS (SELECT * FROM df_questions);")
 
     print("Flushing...")
     db.sql("CHECKPOINT;")
-

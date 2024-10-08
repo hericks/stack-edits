@@ -25,6 +25,7 @@ class StackoverflowQuestionsClient:
         self.last_request_timestamp = None
 
     def get_all_questions(self, tag: str) -> list[Question]:
+        """Fetches all questions for a given tag."""
         all_questions, page, has_more = [], 1, True
         while has_more:
             response = self.get_questions(tag, page)
@@ -36,7 +37,8 @@ class StackoverflowQuestionsClient:
     def get_questions(
         self, tag: str, page: int = 1, pagesize: int = 100
     ) -> QuestionsResponse:
-        logger.info(f"{datetime.now()}: Fetching page {page}...")        
+        """Fetches all questions for a given tag listed on a given page."""
+        logger.info(f"{datetime.now()}: Fetching page {page}...")
 
         # ensure backoff parameter is respected
         self._ensure_backoff()
@@ -78,6 +80,7 @@ class StackoverflowQuestionsClient:
         return response_model
 
     def _ensure_backoff(self) -> None:
+        """Ensures any previously returned backoff request is respected."""
         if self.backoff is None:
             return
 

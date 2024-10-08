@@ -12,10 +12,11 @@ logger = logging.getLogger()
 
 
 class StackoverflowQuestionsClient:
-    def __init__(self):
+    def __init__(self, key: str | None = None):
         self.base_url = "https://api.stackexchange.com"
         self.api_version = "2.3"
         self.site = "stackoverflow"
+        self.key = key
 
         # to be set by last request
         self.quota_max = None
@@ -50,6 +51,7 @@ class StackoverflowQuestionsClient:
                 "page": page,
                 "pagesize": pagesize,
                 "filter": "!nNPvSNP4(R",
+                "key": self.key,
             },
         )
 

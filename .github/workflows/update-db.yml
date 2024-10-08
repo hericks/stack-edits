@@ -1,8 +1,17 @@
 name: Update Database
 run-name: Update database 🚀
+
 on:
   schedule:
     - cron: '0 1 * * *'
+  workflow_dispatch:
+    inputs:
+      commit_changes:
+        description: 'Commit Changes'
+        required: true
+        default: 'true'
+        type: boolean
+
 jobs:
   Update-Database:
     runs-on: ubuntu-latest
@@ -18,6 +27,7 @@ jobs:
       - name: Update database
         run: python3 update_db.py
       - name: Commit update
+        if: ${{ inputs.commit_changes == 'true' || github.event_name == 'schedule' }}
         run: |
           git config --global user.name 'Matthias Hericks'
           git config --global user.email 'hericks@users.noreply.github.com'

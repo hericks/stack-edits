@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Update database
-        run: python3 update_db.py
+        run: python3 update_db.py --key ${{ secrets.STACKEXCHANGE_API_KEY }}
       - name: Commit update
         if: ${{ inputs.commit_changes == 'true' || github.event_name == 'schedule' }}
         run: |

@@ -9,7 +9,7 @@ on:
       commit_changes:
         description: 'Commit Changes'
         required: true
-        default: 'true'
+        default: true
         type: boolean
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
       - name: Update database
         run: python3 update_db.py --key ${{ secrets.STACKEXCHANGE_API_KEY }}
       - name: Commit update
-        if: ${{ inputs.commit_changes == 'true' || github.event_name == 'schedule' }}
+        if: ${{ inputs.commit_changes || github.event_name == 'schedule' }}
         run: |
           git config --global user.name 'Matthias Hericks'
           git config --global user.email 'hericks@users.noreply.github.com'

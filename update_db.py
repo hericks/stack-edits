@@ -19,7 +19,9 @@ def update_db(key: str | None = None):
 
     crawl_date = datetime.now()
     df_questions = df_questions.with_columns(pl.lit(crawl_date).alias("crawl_date"))
-    print(f"Done fetching {df_questions.height} questions.")
+    print(
+        f"Done fetching {df_questions.height} questions (remaining quota {client.quota_remaining})."
+    )
 
     if os.path.exists(OUTPUT_PATH):
         print(f"Storage '{OUTPUT_PATH}' exists. Loading questions...")

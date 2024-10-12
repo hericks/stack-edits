@@ -35,33 +35,42 @@ class StackoverflowQuestionsClient:
         return all_questions
 
     def get_questions(
-        self, tag: str, page: int = 1, pagesize: int = 100
+        self, tag: str, page: int = 1, pagesize: int = 100, max_retries: int = 5
     ) -> QuestionsResponse:
         """Fetches all questions for a given tag listed on a given page."""
-        logger.info(f"{datetime.now()}: Fetching page {page}...")
+        logger.info(f"Fetching page {page}...")
 
         # ensure backoff parameter is respected
         self._ensure_backoff()
 
-        # make request
-        url = "/".join([self.base_url, self.api_version, "questions"])
-        response = requests.get(
-            url=url,
-            params={
-                "site": self.site,
-                "tagged": tag,
-                "page": page,
-                "pagesize": pagesize,
-                "filter": "!nNPvSNP4(R",
-                "key": self.key,
-            },
-        )
+        for retry in range(max_retries):
+            # make request
+            url = "/".join([self.base_url, self.api_version, "questions"])
+            response = requests.get(
+                url=url,
+                params={
+                    "site": self.site,
+                    "tagged": tag,
+                    "page": page,
+                    "pagesize": pagesize,
+                    "filter": "!nNPvSNP4(R",
+                    "key": self.key,
+                },
+            )
 
-        # handle invalid requests (TODO: improve handling)
-        if response.status_code != 200:
-            logger.warning(response.status_code)
-            logger.warning(response.text)
-            response.raise_for_status()
+            if response.status_code == 200:
+                break
+
+            logger.warning(
+                f"Problem encountered (status_code: {response.status_code}, text: {response.text})."
+            )
+
+            if retry == max_retries - 1:
+                logger.info("Max number of retries reached. Stopping...")
+                response.raise_for_status()
+
+            logger.info(f"Waiting {2**retry}s...")
+            time.sleep(2**retry)
 
         # parse output
         response_dict = json.loads(response.text)
@@ -91,7 +100,5 @@ class StackoverflowQuestionsClient:
         remaining_backoff = (next_request_allowed - now).total_seconds()
 
         if remaining_backoff > 0:
-            logger.info(
-                f"{datetime.now()}: {remaining_backoff}s backoff required. Waiting..."
-            )
+            logger.info(f"{remaining_backoff}s backoff required. Waiting...")
             time.sleep(remaining_backoff)

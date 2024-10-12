@@ -39,7 +39,7 @@ class StackoverflowQuestionsClient:
         return all_questions
 
     def get_questions(
-        self, tag: str, page: int = 1, pagesize: int = 100, max_retries: int = 5
+        self, tag: str, page: int = 1, pagesize: int = 100, max_retries: int = 10
     ) -> QuestionsResponse:
         """Fetches all questions for a given tag listed on a given page."""
         logger.info(f"Fetching page {page}...")

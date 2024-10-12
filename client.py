@@ -7,7 +7,11 @@ import requests
 
 from models import Question, QuestionsResponse
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    format="%(asctime)s %(levelname)-8s %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.INFO,
+)
 logger = logging.getLogger()
 
 

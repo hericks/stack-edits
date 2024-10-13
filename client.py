@@ -77,8 +77,7 @@ class StackoverflowQuestionsClient:
             time.sleep(2**retry)
 
         # parse output
-        response_dict = json.loads(response.text)
-        response_model = QuestionsResponse.model_validate(response_dict)
+        response_model = QuestionsResponse.model_validate_json(response.text)
 
         # update client state
         self.quota_max = response_model.quota_max

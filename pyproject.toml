@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "stack-edits"
+version = "0.1.0"
+description = ""
+authors = ["Matthias Hericks <hericks@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "stack_edits"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+polars = "^1.9.0"
+pydantic = "^2.9.2"
+requests = "^2.32.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

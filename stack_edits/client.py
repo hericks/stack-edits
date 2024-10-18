@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 import requests
 
-from models import Question, QuestionsResponse
+from stack_edits.models import Question, QuestionsResponse
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)-8s %(message)s",

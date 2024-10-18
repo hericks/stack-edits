@@ -4,7 +4,7 @@ from datetime import datetime
 
 import polars as pl
 
-from client import StackoverflowQuestionsClient
+from stack_edits.client import StackoverflowQuestionsClient
 
 OUTPUT_PATH = "questions.parquet"
 TAG = "python-polars"

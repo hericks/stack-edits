@@ -84,10 +84,6 @@ class StackoverflowQuestionsClient:
         self.backoff = response_model.backoff
         self.last_request_timestamp = datetime.now()
 
-        # TODO: remove
-        if self.backoff is not None:
-            logger.info(f"{self.backoff}s backoff requested.")
-
         return response_model
 
     def _ensure_backoff(self) -> None:

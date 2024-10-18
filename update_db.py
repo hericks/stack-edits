@@ -10,7 +10,7 @@ OUTPUT_PATH = "questions.parquet"
 TAG = "python-polars"
 
 
-def update_db(key: str | None = None):
+def update_db(key: str | None = None) -> None:
     client = StackoverflowQuestionsClient(key=key)
 
     print("Fetching questions...")

@@ -22,10 +22,10 @@ class StackoverflowQuestionsClient:
         self.key = key
 
         # to be set by last request
-        self.quota_max = None
-        self.quota_remaining = None
-        self.backoff = None
-        self.last_request_timestamp = None
+        self.quota_max: int | None = None
+        self.quota_remaining: int | None = None
+        self.backoff: int | None = None
+        self.last_request_timestamp: datetime | None = None
 
     def get_all_questions(self, tag: str) -> list[Question]:
         """Fetches all questions for a given tag."""
@@ -51,7 +51,7 @@ class StackoverflowQuestionsClient:
             url = "/".join([self.base_url, self.api_version, "questions"])
             response = requests.get(
                 url=url,
-                params={
+                params={  # type: ignore
                     "site": self.site,
                     "tagged": tag,
                     "page": page,
@@ -94,6 +94,8 @@ class StackoverflowQuestionsClient:
         """Ensures any previously returned backoff request is respected."""
         if self.backoff is None:
             return
+
+        assert self.last_request_timestamp is not None
 
         # compute remaining backoff period
         now = datetime.now()

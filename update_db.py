@@ -28,11 +28,11 @@ def update_db(key: str | None = None) -> None:
         df_storage = pl.read_parquet(OUTPUT_PATH)
         print(f"Done loading {df_storage.height} questions. Concatenating...")
         df_questions = pl.concat([df_storage, df_questions])
-        print(f"Done concatenating dataframes.")
+        print("Done concatenating dataframes.")
 
     print(f"Writing questions to storage '{OUTPUT_PATH}'...")
     df_questions.write_parquet(OUTPUT_PATH)
-    print(f"Done writing questions.")
+    print("Done writing questions.")
 
 
 if __name__ == "__main__":

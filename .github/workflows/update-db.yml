@@ -28,7 +28,9 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
       - name: Update database
-        run: python3 update_db.py --key ${{ secrets.STACKEXCHANGE_API_KEY }}
+        run: |
+          source .venv/bin/activate
+          python3 update_db.py --key ${{ secrets.STACKEXCHANGE_API_KEY }}
       - name: Commit update
         if: ${{ inputs.commit_changes || github.event_name == 'schedule' }}
         run: |
